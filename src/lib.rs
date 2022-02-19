@@ -63,8 +63,9 @@ pub fn gen() {
             None => list.push(handle_random_category(task, &mut rng)),
         }
     }
+
     for text in list {
-        println!("{}", text);
+        println!("- {}", text);
     }
 }
 
