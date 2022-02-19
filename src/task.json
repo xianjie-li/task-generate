@@ -1,0 +1,43 @@
+{
+  "restDayProbability": 3,
+  "tasks": [
+    {
+      "label": "【日常】: $category1 标准库 > TODO > 生态内容 ",
+      "randCategory": [
+        [
+          {
+            "label": "前端",
+            "ratio": 40
+          },
+          {
+            "label": "后端",
+            "ratio": 40
+          },
+          {
+            "label": "基础知识",
+            "ratio": 20
+          }
+        ]
+      ],
+      "probability": 95
+    },
+    {
+      "label": "【日常】: 阅读",
+      "probability": 70
+    },
+    {
+      "label": "【日常】: 笔记复习、迁移、整理",
+      "probability": 50
+    },
+    {
+      "label": "【实战任务】: 进行实战任务",
+      "probability": 90
+    },
+    {
+      "label": "【日常】: 整理当天的技术文章并记录到对应todo * 1"
+    },
+    {
+      "label": "【支线】: 英语(单词20 或 书籍一小节)"
+    }
+  ]
+}
