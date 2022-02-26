@@ -2,7 +2,6 @@ use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Read;
-use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all(deserialize = "camelCase"))]
@@ -26,10 +25,10 @@ struct Config {
 }
 
 pub fn gen() {
-    let mut config_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    config_path.push("task.json");
+    let path = get_path("task.json");
+    let path = path.as_str();
 
-    let path = config_path.to_str().unwrap();
+    println!("{}", path);
 
     let Config {
         tasks,
@@ -69,11 +68,23 @@ pub fn gen() {
     }
 }
 
-/// 处理randCategory
+// 获取配置地址
+fn get_path(str: &str) -> String {
+    if cfg!(debug_assertions) {
+        String::from(str)
+    } else {
+        let mut config_path = std::env::current_exe().unwrap();
+        config_path.pop();
+        config_path.push(str);
+        String::from(config_path.to_str().unwrap())
+    }
+}
+
+// 处理randCategory
 fn handle_random_category(task: &Task, rng: &mut ThreadRng) -> String {
     match &task.rand_category {
         Some(category) => {
-            if category.len() == 0 {
+            if category.is_empty() {
                 return task.label.clone();
             }
 
@@ -81,7 +92,7 @@ fn handle_random_category(task: &Task, rng: &mut ThreadRng) -> String {
             let mut ls: Vec<&String> = Vec::new();
 
             for cate in category.iter() {
-                if cate.len() != 0 {
+                if !cate.is_empty() {
                     let mut base_ratio = 0f64;
 
                     for t in cate.iter() {
@@ -110,7 +121,7 @@ fn handle_random_category(task: &Task, rng: &mut ThreadRng) -> String {
     }
 }
 
-/// 根据传入配置地址获取Config
+// 根据传入配置地址获取Config
 fn get_config(path: &str) -> Config {
     let mut file = File::open(path).unwrap();
     let mut json_str = String::from("");
