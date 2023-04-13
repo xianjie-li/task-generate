@@ -10,7 +10,7 @@
 
 <br>
 
-不提供编译文件, 需要安装 rust 后自行编译:
+编译: 安装 rust 后进行编译
 
 1. 克隆并进入项目目录, 运行 `cargo build --release`
 2. 复制可执行文件 `target/release/task-generate` 到任意目录
