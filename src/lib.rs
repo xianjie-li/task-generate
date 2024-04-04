@@ -19,21 +19,17 @@ struct TaskCateItem {
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all(deserialize = "camelCase"))]
-struct Config {
+pub struct Config {
     rest_day_probability: f64,
     tasks: Vec<Task>,
 }
 
-pub fn gen() {
-    let path = get_path("task.json");
-    let path = path.as_str();
-
-    println!("{}", path);
-
+pub fn gen(config: Config) {
     let Config {
         tasks,
         rest_day_probability,
-    } = get_config(path);
+    } = config;
+
     if !tasks.len() == 0 {
         panic!("tasks can't be empty");
     }
@@ -59,7 +55,9 @@ pub fn gen() {
                     list.push(handle_random_category(task, &mut rng));
                 }
             }
-            None => list.push(handle_random_category(task, &mut rng)),
+            None => {
+                list.push(handle_random_category(task, &mut rng));
+            }
         }
     }
 
@@ -69,7 +67,7 @@ pub fn gen() {
 }
 
 // 获取配置地址
-fn get_path(str: &str) -> String {
+pub fn get_path(str: &str) -> String {
     if cfg!(debug_assertions) {
         String::from(str)
     } else {
@@ -95,9 +93,12 @@ fn handle_random_category(task: &Task, rng: &mut ThreadRng) -> String {
                 if !cate.is_empty() {
                     let mut base_ratio = 0f64;
 
+                    let task_ratio: f64 = rng.gen();
+
+                    println!("task_ratio: {}", task_ratio);
+
                     for t in cate.iter() {
                         base_ratio += t.ratio;
-                        let task_ratio: f64 = rng.gen();
 
                         if task_ratio < base_ratio {
                             ls.push(&t.label);
@@ -122,7 +123,7 @@ fn handle_random_category(task: &Task, rng: &mut ThreadRng) -> String {
 }
 
 // 根据传入配置地址获取Config
-fn get_config(path: &str) -> Config {
+pub fn get_config(path: &str) -> Config {
     let mut file = File::open(path).unwrap();
     let mut json_str = String::from("");
 
