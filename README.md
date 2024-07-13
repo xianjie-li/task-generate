@@ -10,7 +10,9 @@
 
 <br>
 
-编译: 安装 rust 后进行编译
+使用: 直接使用dist目录下的预构建版本, 目前仅预构建了 aarch64 的 macos 和 x86_64 的 windows版本
+
+自行编译: 安装 rust 后进行编译
 
 1. 克隆并进入项目目录, 运行 `cargo build --release`
 2. 复制可执行文件 `target/release/task-generate` 到任意目录
